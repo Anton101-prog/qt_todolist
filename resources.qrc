@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>MyTextInput.qml</file>
+        <file>MyMyTextInput.qml</file>
+        <file>maintest.qml</file>
+    </qresource>
+</RCC>
