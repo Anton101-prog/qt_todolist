@@ -3,30 +3,24 @@
 #include <QQmlContext>
 
 #include "DataBase.h"
+#include "ListModel.h"
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
 
-    MyDataBase::connectDataBase();
-    MyDataBase::initDataBase();
-    qmlRegisterType<MyDataBase>("org.mydb", 1, 0, "MyDataBase");
-
-
-
     QQmlApplicationEngine engine;
 
 
-    const QUrl url(u"qrc:/todolist/main.qml"_qs);
-    QObject::connect(
-        &engine,
-        &QQmlApplicationEngine::objectCreated,
-        &app,
-        [url](QObject *obj, const QUrl &objUrl) {
-            if (!obj && url == objUrl)
-                QCoreApplication::exit(-1);
-        },
-        Qt::QueuedConnection);
-    engine.load(url);
+    MyDataBase database;
+    database.connectDataBase();
+
+    ListModel * model = new ListModel();
+
+    engine.rootContext()->setContextProperty("myModel", model);
+    engine.rootContext()->setContextProperty("database", &database);
+
+    engine.load(QUrl(QString(QStringLiteral("qrc:/main.qml"))));
+
 
     return app.exec();
 }
