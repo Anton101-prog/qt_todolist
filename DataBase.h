@@ -10,19 +10,35 @@
 #include <QObject>
 #include <QDebug>
 
+#define DATABASE_HOSTNAME "NameDataBase"
+#define DATABASE_NAME "mydatabase.db"
+
+
+#define TABLE "NameTable"
+#define TABLE_INFO "info"
+
 class MyDataBase : public QObject {
     Q_OBJECT
 
+private:
+    QSqlDatabase db;
+
 public:
     explicit MyDataBase(QObject * parent = 0);
-    Q_INVOKABLE bool insertItemDataBase(QString mytext);
-    Q_INVOKABLE QString getItemDataBase(int id_item);
-    Q_INVOKABLE bool deleteItemDataBase(int index_item);
-    static void clearDataBase();
-    Q_INVOKABLE int countRowDataBase();
+    ~MyDataBase();
 
-    static void connectDataBase();
-    static void initDataBase();
+    bool openDataBase();
+    bool restoreDataBase();
+    void closeDataBase();
+    bool createTable();
+    void connectDataBase();
+    void initDataBase();
+
+
+public slots:
+    bool insertIntoTable (const QVariantList & data);
+    bool insertIntoTable(const QString&text);
+    bool removeRecord(const int id);
 
 };
 

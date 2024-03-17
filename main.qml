@@ -1,17 +1,14 @@
 import QtQuick
 import QtQuick.Controls
-import org.mydb 1.0
 Window {
     id: windowroot
     visible: true
     color: "gray"
 
-    MyDataBase {
-        id: mydb
-    }
+
+
 
     Page {
-        signal newMessage(string msg)
         id: page
         anchors.fill: parent
         header: Rectangle {
@@ -52,11 +49,10 @@ Window {
                 onClicked: {
                     if (textArea.text !== ''){
                         // textArea.clear()
-
-                        page.newMessage(textArea.text)
-                        mydb.insertItemDataBase(textArea.text);
-                        console.log(mydb.countRowDataBase());
+                        database.insertIntoTable(textArea.text)
+                        myModel.updateModel()
                         listView.positionViewAtEnd();
+
                         textArea.clear();
                     }
 
@@ -69,7 +65,7 @@ Window {
         ListView {
             id: listView
             anchors.fill: parent
-            model: listModel
+            model: myModel
             spacing: 10
             clip: true
             verticalLayoutDirection: ListView.BottomToTop
@@ -104,35 +100,31 @@ Window {
                     width: listView.width-20
 
                     anchors.centerIn: parent
-                    text: model.text
-                    wrapMode: Text.Wrap                }
-            }
-
-
-        }
-        ListModel {
-            id: listModel
-
-            signal itemInserted(string text)
-
-            Component.onCompleted: {
-                loadFromDatabase();
-            }
-
-            function loadFromDatabase() {
-                var rowCount = mydb.countRowDataBase();
-                for (let i = 0; i < rowCount; ++i){
-                    var data = mydb.getItemDataBase(i); // i + 1?
-                    append({text: data});
+                    text: model.info
+                    wrapMode: Text.Wrap
                 }
             }
 
+
         }
-        onNewMessage: {
-            var newMsg = {};
-            newMsg.text = msg
-            listModel.append(newMsg);
-        }
+        // ListModel {
+        //     id: listModel
+
+        //     signal itemInserted(string text)
+
+        //     Component.onCompleted: {
+        //         loadFromDatabase();
+        //     }
+
+        //     function loadFromDatabase() {
+        //         var rowCount = mydb.countRowDataBase();
+        //         for (let i = 0; i < rowCount; ++i){
+        //             var data = mydb.getItemDataBase(i); // i + 1?
+        //             append({text: data});
+        //         }
+        //     }
+
+        // }
     }
 
 

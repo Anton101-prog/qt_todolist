@@ -2,6 +2,7 @@ QT += widgets quick sql
 
 SOURCES += \
         DataBase.cpp \
+        ListModel.cpp \
         main.cpp
 
 resources.files = main.qml 
@@ -23,4 +24,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 DISTFILES +=
 
 HEADERS += \
-    DataBase.h
+    DataBase.h \
+    ListModel.h
